@@ -1,1 +1,10 @@
-/* CSS declarations go here */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#render-target {
+    height: 100%;
+}

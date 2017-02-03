@@ -1,28 +1,29 @@
 import * as React from "react";
 import { Component } from "react";
 import { Dialog, FlatButton, TextField } from "material-ui";
+import { browserHistory } from 'react-router';
 
-export class Login extends Component<{}, { email: string, password: string, emailMessage: string, passwordMessage: string }> {
+export class Login extends Component<{}, { name: string, password: string, nameMessage: string, passwordMessage: string }> {
 
     state = {
-        email: "",
+        name: "",
         password: "",
-        emailMessage: "",
+        nameMessage: "",
         passwordMessage: ""
     };
 
     public render() {
-        let emailInput = <TextField
+        let nameInput = <TextField
                 hintText="Name or Email"
                 floatingLabelText="Name or Email"
                 fullWidth={true}
-                onChange={(e) => this.setState({ email: e.target["value"] })}
-                errorText={this.state.emailMessage}/>,
+                onChange={(e, name) => this.setState({ name })}
+                errorText={this.state.nameMessage}/>,
             passwordInput = <TextField
                 hintText="Password"
                 floatingLabelText="Password"
                 fullWidth={true}
-                onChange={(e) => this.setState({ password: e.target["value"] })}
+                onChange={(e, password) => this.setState({ password })}
                 type="password"
                 errorText={this.state.passwordMessage}/>,
             actions = [
@@ -31,30 +32,35 @@ export class Login extends Component<{}, { email: string, password: string, emai
                         style={{ textAlign: "center", display: "block", width: "100%" }}
                         label="Log in"
                         primary={true}
-                        onClick={() => this.login(this.state.email, this.state.password)}/>
+                        onClick={() => this.login(this.state.name, this.state.password)}/>
                 </div>
             ] as React.ReactElement<any>[];
         return <Dialog open={true} title="Login" actions={actions}>
-            {emailInput}
+            {nameInput}
             <br/>
             {passwordInput}
         </Dialog>;
     }
 
-    private login(email: string, password: string) {
-        if (!email) {
-            this.setState({ emailMessage: "User name is required", passwordMessage: "" });
+    private login(name: string, password: string) {
+        if (!name) {
+            this.setState({ nameMessage: "User name is required", passwordMessage: "" });
         } else if (!password) {
-            this.setState({ emailMessage: "", passwordMessage: "Password is required" });
+            this.setState({ nameMessage: "", passwordMessage: "Password is required" });
         } else {
-            Meteor.loginWithPassword(email, password, (error, data) => {
+            Meteor.loginWithPassword(name, password, (error, data) => {
                 if (error) {
                     console.error(error);
-                    this.setState({ emailMessage: "Invalid password or user name", passwordMessage: "" })
+                    this.setState({ nameMessage: "Invalid password or user name", passwordMessage: "" })
                 } else {
-                    this.setState({ emailMessage: "", passwordMessage: "" });
+                    this.setState({ nameMessage: "", passwordMessage: "" });
+                    let profile = Accounts.user().profile;
+                    if (profile.isAdmin) {
+                        this.props["router"].push("/admin/");
+                    } else {
+                        this.props["router"].push("/assessment/");
+                    }
                 }
-                console.info(Accounts.user());
             });
         }
     }

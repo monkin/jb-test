@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { RaisedButton } from 'material-ui';
-import { Router, Route, Link, browserHistory } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 
 import { Login } from './Login';
-import { Task } from './Task';
+import { Page } from './admin/Page';
  
 export class App extends Component<{}, {}> {
  
@@ -12,6 +12,7 @@ export class App extends Component<{}, {}> {
     return <Router history={browserHistory}>
         <Route path="/" component={Login}/>
         <Route path="/login" component={Login}/>
+        <Route path="/admin" component={Page}/>
     </Router>;
   }
 }
