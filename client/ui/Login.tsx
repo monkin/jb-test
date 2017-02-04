@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Component } from "react";
+import { Component, ReactElement } from "react";
 import { Dialog, FlatButton, TextField } from "material-ui";
 import { browserHistory } from 'react-router';
 
@@ -13,20 +13,7 @@ export class Login extends Component<{}, { name: string, password: string, nameM
     };
 
     public render() {
-        let nameInput = <TextField
-                hintText="Name or Email"
-                floatingLabelText="Name or Email"
-                fullWidth={true}
-                onChange={(e, name) => this.setState({ name })}
-                errorText={this.state.nameMessage}/>,
-            passwordInput = <TextField
-                hintText="Password"
-                floatingLabelText="Password"
-                fullWidth={true}
-                onChange={(e, password) => this.setState({ password })}
-                type="password"
-                errorText={this.state.passwordMessage}/>,
-            actions = [
+        let actions = [
                 <div style={{ padding: "0 16px 8px 16px" }}>
                     <FlatButton
                         style={{ textAlign: "center", display: "block", width: "100%" }}
@@ -34,11 +21,21 @@ export class Login extends Component<{}, { name: string, password: string, nameM
                         primary={true}
                         onClick={() => this.login(this.state.name, this.state.password)}/>
                 </div>
-            ] as React.ReactElement<any>[];
+            ] as ReactElement<any>[];
         return <Dialog open={true} title="Login" actions={actions}>
-            {nameInput}
-            <br/>
-            {passwordInput}
+            <TextField
+                hintText="Name or Email"
+                floatingLabelText="Name or Email"
+                fullWidth={true}
+                onChange={(e, name) => this.setState({ name })}
+                errorText={this.state.nameMessage}/>
+            <TextField
+                hintText="Password"
+                floatingLabelText="Password"
+                fullWidth={true}
+                onChange={(e, password) => this.setState({ password })}
+                type="password"
+                errorText={this.state.passwordMessage}/>
         </Dialog>;
     }
 
