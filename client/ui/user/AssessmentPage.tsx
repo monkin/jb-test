@@ -17,7 +17,7 @@ class AssessmentPage extends Component<{ users: Meteor.User[], params: { usernam
             userText = user ? user.profile.name + " " + user.profile.surname : "User";
         return <div>
             <AppBar title="Peer Assessment" iconElementLeft={<IconButton  title="Log out" onClick={ () => browserHistory.push("/assessment") }><NavigationBack/></IconButton> as ReactElement<any>}/>
-            <Paper zDepth={0} style={{ margin: "0 auto", maxWidth: "1024px" }}>
+            <Paper zDepth={0} style={{ margin: "0 auto", maxWidth: "1024px", overflowY: "auto" }}>
                 <CardTitle title={ "Make Assessment for " + userText } style={{ paddingLeft: "0", paddingRight: "0" }}/>
             </Paper>
         </div>

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Component, ComponentClass } from "react";
-import { FontIcon, FloatingActionButton, Snackbar, Paper, CardTitle, FlatButton, Table, TableHeader, TableRow, TableBody, TableHeaderColumn, TableRowColumn } from "material-ui";
+import { FloatingActionButton, Snackbar, Paper, CardTitle, FlatButton, Table, TableHeader, TableRow, TableBody, TableHeaderColumn, TableRowColumn } from "material-ui";
+import ContentAdd from "material-ui/svg-icons/content/add";
+import ActionDelete from "material-ui/svg-icons/action/delete";
 import { createContainer } from "react-meteor-data";
 import { Criteria } from "./Criteria";
 import CreateCriterionDialog from "./CreateCriterionDialog";
@@ -35,8 +37,8 @@ class CriteriaPage extends Component<{ criteria: { _id: string, name: string }[]
             <Paper style={{ margin: "8px 32px" }} zDepth={0}>
                 <div style={{ display: "flex", alignItems: "center" }}>
                     <CardTitle title="Criteria" style={{ flexGrow: 1 }}/>
-                    <FlatButton label="Create criterion" onClick={() => this.setState({ isCreateDialogOpen: true })} primary={true} icon={<FontIcon className="muidocs-icon-content-add"/>}/>
-                    <FlatButton label="Delete criteria" onClick={() => this.removeCriteria()} secondary={true} disabled={!s.selection.length} icon={<FontIcon className="muidocs-icon-action-delete"/>}/>
+                    <FlatButton label="Create criterion" onClick={() => this.setState({ isCreateDialogOpen: true })} primary={true} icon={<ContentAdd/>}/>
+                    <FlatButton label="Delete criteria" onClick={() => this.removeCriteria()} secondary={true} disabled={!s.selection.length} icon={<ActionDelete/>}/>
                 </div>
             </Paper>
             <div style={{ margin: "0 32px" }}>
