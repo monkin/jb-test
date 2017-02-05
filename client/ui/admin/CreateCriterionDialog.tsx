@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Component, ReactElement } from "react";
 import { Dialog, FlatButton, TextField } from "material-ui";
-import { Criteria } from "./Criteria"
+import { Criteria } from "../../lib/Criteria"
 
 interface DialogState {
     name: string;

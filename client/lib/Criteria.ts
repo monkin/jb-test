@@ -20,5 +20,7 @@ export namespace Criteria {
             });
         });
     }
-
+    export function subscribe() {
+        return Meteor.subscribe("criteria");
+    }
 }

@@ -4,7 +4,7 @@ import { FloatingActionButton, Snackbar, Paper, CardTitle, FlatButton, Table, Ta
 import ContentAdd from "material-ui/svg-icons/content/add";
 import ActionDelete from "material-ui/svg-icons/action/delete";
 import { createContainer } from "react-meteor-data";
-import { Criteria } from "./Criteria";
+import { Criteria } from "../../lib/Criteria";
 import CreateCriterionDialog from "./CreateCriterionDialog";
 import CreateUserDialog from "./CreateUserDialog";
 import { Page, AdminMenuItem } from "./Page"
