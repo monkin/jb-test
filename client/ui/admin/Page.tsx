@@ -1,7 +1,9 @@
-import * as React from 'react';
-import { Component, ReactElement } from 'react';
-import { browserHistory } from 'react-router';
-import { Paper, Menu, MenuItem, AppBar, Divider, List, ListItem } from 'material-ui';
+import * as React from "react";
+import { Component, ReactElement } from "react";
+import { browserHistory } from "react-router";
+import { Paper, Menu, MenuItem, AppBar, Divider, List, ListItem } from "material-ui";
+import IconButton from "material-ui/IconButton";
+import NavigationClose from "material-ui/svg-icons/navigation/close";
 
 const titleLayoutStyle = {
         display: "flex",
@@ -12,8 +14,7 @@ const titleLayoutStyle = {
         display: "flex",
         alignItems: "stretch",
         alignContent: "stretch",
-        flexGrow: 1,
-        zIndex: 1150
+        flexGrow: 1
     };
 
 export enum AdminMenuItem {
@@ -33,22 +34,18 @@ export class Page extends Component<{ value?: AdminMenuItem, children?: any, tit
     render() {
         let props = this.props;
         return <div style={titleLayoutStyle}>
-            <AppBar title={props.title} iconElementLeft={<div style={{ display: "none" }}/> as ReactElement<any>}/>
+            <AppBar style={{ flexShrink: 0 }} title={props.title} iconElementLeft={<IconButton title="Log out" onClick={ () => this.logout() }><NavigationClose/></IconButton> as ReactElement<any>}/>
             <div style={contentLayoutStyle}>
                 <Paper style={{ width: "25%", maxWidth: "300px", minWidth: "200px" }}>
                     <div style={{ overflow: "hidden", maxWidth: "100%" }}>
-                        <Menu value={props.value ? AdminMenuItem[props.value] : ""} onChange={ (e, value: string) => this.selectMenuItem(AdminMenuItem[value]) }>
+                        <Menu value={(typeof props.value === "number") ? AdminMenuItem[props.value] : ""} onChange={ (e, value: string) => this.selectMenuItem(AdminMenuItem[value]) }>
                             <MenuItem primaryText="Users" value="USERS"/>
                             <MenuItem primaryText="Criteria" value="CRITERIA"/>
                             <MenuItem primaryText="Assessment" value="ASSESSMENT"/>
                         </Menu>
-                        <Divider/>
-                        <List>
-                            <ListItem  primaryText="Log out" onClick={() => this.logout()}/>
-                        </List>
                     </div>
                 </Paper>
-                <div style={{ flexGrow: 1, position: "relative", zIndex: 1 }}>
+                <div style={{ flexGrow: 1, position: "relative", overflowY: "scroll" }}>
                     {props.children || []}
                 </div>
             </div>

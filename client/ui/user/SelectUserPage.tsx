@@ -6,7 +6,7 @@ import IconButton from "material-ui/IconButton";
 import NavigationClose from "material-ui/svg-icons/navigation/close";
 import { createContainer } from "react-meteor-data";
 
-class UserListPage extends Component<{ users: Meteor.User[] }, { search: string }> {
+class SelectUserPage extends Component<{ users: Meteor.User[] }, { search: string }> {
     state = {
         search: ""
     }
@@ -15,7 +15,7 @@ class UserListPage extends Component<{ users: Meteor.User[] }, { search: string 
         let p = this.props,
             userId = Accounts.userId();
         return <div>
-            <AppBar title="Peer Assessment" iconElementLeft={<IconButton onClick={ () => Accounts.logout(() => browserHistory.push("/")) }><NavigationClose/></IconButton> as ReactElement<any>}/>
+            <AppBar title="Peer Assessment" iconElementLeft={<IconButton title="Log out" onClick={ () => Accounts.logout(() => browserHistory.push("/")) }><NavigationClose/></IconButton> as ReactElement<any>}/>
             <Paper zDepth={0} style={{ margin: "0 auto", maxWidth: "1024px" }}>
                 <CardTitle title="Choose an Employee" style={{ paddingLeft: "0", paddingRight: "0" }}/>
                 <TextField fullWidth={true} floatingLabelText="Employee name" hintText="Employee name" onChange={(e, value) => this.setState({ search: value.trim().replace(/\s+/g, " ").toLowerCase() })}/>
@@ -47,4 +47,4 @@ export default createContainer(() => {
     return {
         users: Meteor.users.find({ "profile.isAdmin": { $ne: true } }, {sort: {"profile.name": 1}}).fetch()
     };
-}, UserListPage) as ComponentClass<{}>;
+}, SelectUserPage) as ComponentClass<{}>;

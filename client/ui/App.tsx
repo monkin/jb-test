@@ -8,8 +8,8 @@ import { Page } from './admin/Page';
 import UsersPage from './admin/UsersPage';
 import CriteriaPage from "./admin/CriteriaPage";
 
-import UserListPage from "./user/UserListPage";
-
+import UserListPage from "./user/SelectUserPage";
+import AssessmentPage from "./user/AssessmentPage";
  
 export class App extends Component<{}, {}> {
  
@@ -23,6 +23,7 @@ export class App extends Component<{}, {}> {
         <Route path="/admin/criteria" component={CriteriaPage}/>
         <Route path="/admin/assessment" component={UsersPage}/>
         <Route path="/assessment" component={UserListPage}/>
+        <Route path="/assessment/:username" component={AssessmentPage}/>
     </Router>;
   }
 }
