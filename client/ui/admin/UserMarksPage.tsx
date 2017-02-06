@@ -113,6 +113,8 @@ class UserMarksPage extends Component<{ user: Meteor.User, criteria: Criteria[],
 export default createContainer((props: { params: { userId: string } }) => {
     let userId = props.params.userId;
 
+    Meteor.subscribe("allUsers");
+    Criteria.subscribe();
     Marks.subscribe({ to: userId });
     Marks.subscribe({ from: userId });
     

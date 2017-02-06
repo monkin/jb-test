@@ -70,6 +70,7 @@ class UsersPage extends Component<{ users: Meteor.User[] }, { isCreateDialogOpen
 }
 
 export default createContainer(() => {
+    Meteor.subscribe("allUsers");
     return {
         users: Meteor.users.find({ "profile.isAdmin": { $ne: true } }, {sort: {"profile.name": 1}}).fetch()
     };

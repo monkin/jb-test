@@ -8,7 +8,13 @@ function isAdmin() {
 
 Meteor.startup(() => {
     let criteria = new Mongo.Collection<{ _id: string, name: string }>("criteria");
-    Meteor.publish("criteria", () => criteria.find({}));
+    Meteor.publish("criteria", function () {
+        if (this.userId) {
+            return criteria.find({});
+        } else {
+            throw new Error("Access denied");
+        }
+    });
 
     criteria.allow({
         insert: isAdmin,

@@ -142,7 +142,10 @@ class CriteriaMultiselect extends Component<{ criteria: Criteria[], mark: number
 }
 
 export default muiThemeable()(createContainer((props: { mark: number, toUser: string }) => {
+    
+    Criteria.subscribe();
     Marks.subscribe({ from: Meteor.userId(), to: props.toUser });
+
     return {
         criteria: Criteria.collection.find({}, { sort: { name: 1 } }).fetch(),
         marks: Marks.collection.find({ from: Meteor.userId(), to: props.toUser }).fetch()

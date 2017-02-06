@@ -84,6 +84,8 @@ class AssessmentPage extends Component<{ criteria: Criteria[], users: Meteor.Use
 
 export default muiThemeable()(createContainer(() => {
 
+    Criteria.subscribe();
+    Meteor.subscribe("allUsers");
     Summary.subscribe();
     
     return {

@@ -15,7 +15,7 @@ import UserListPage from "./user/SelectUserPage";
 import AssessmentPage from "./user/AssessmentPage";
  
 export class App extends Component<{}, {}> {
- 
+   
   render() {
     let user = Meteor.user();
     return <Router history={browserHistory}>

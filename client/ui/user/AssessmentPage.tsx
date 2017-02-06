@@ -46,6 +46,9 @@ class AssessmentPage extends Component<{ toUser?: Meteor.User }, { }> {
 }
 
 export default createContainer((props: { params: { username: string } }) => {
+    
+    Meteor.subscribe("allUsers");
+
     return {
         toUser: Meteor.users.findOne({ "profile.isAdmin": { $ne: true }, username: props.params.username })
     };

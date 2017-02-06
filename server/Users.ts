@@ -26,10 +26,13 @@ Meteor.startup(() => {
         remove: isAdmin
     });
 
-    Meteor.publish("userData", () => Meteor.users.find({_id: this.userId}));
+    Meteor.publish("userData", function () {
+        return Meteor.users.find({_id: this.userId});
+    });
+
     Meteor.publish("allUsers", function () {
         if (this.userId) {
-            Meteor.users.find({ "profile.isAdmin": { $ne: true } });
+            return Meteor.users.find({ "profile.isAdmin": { $ne: true } });
         } else {
             throw new Error(`Access denied`);
         }

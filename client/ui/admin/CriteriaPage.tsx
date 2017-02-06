@@ -66,6 +66,7 @@ class CriteriaPage extends Component<{ criteria: { _id: string, name: string }[]
 }
 
 export default createContainer(() => {
+    Criteria.subscribe();
     return {
         criteria: Criteria.collection.find({}).fetch()
     };
