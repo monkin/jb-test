@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "install": "curl https://install.meteor.com/ | sh",
-    "start": "meteor run --port ${PORT:-3000}"
+    "start": "node_modules/.bin/meteor meteor run --port ${PORT:-3000}"
   },
   "dependencies": {
     "@types/es6-shim": "^0.31.32",
@@ -28,6 +27,9 @@
     "react-dom": "^15.4.2",
     "react-meteor-data": "^0.2.10",
     "react-router": "^3.0.2",
-    "react-tap-event-plugin": "^2.0.1"
+    "react-tap-event-plugin": "^2.0.1",
+    "meteor": "^0.5.2-1",
+    "fibers": "^1.0.15",
+    "forever": "^0.15.3"
   }
 }
