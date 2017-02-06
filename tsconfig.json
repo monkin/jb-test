@@ -2,6 +2,10 @@
     "compilerOptions": {
         "target": "es5",
         "jsx": "react",
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "moduleResolution": "node",
+        "typeRoots": [
+            "node_modules"
+        ]
     }
 }

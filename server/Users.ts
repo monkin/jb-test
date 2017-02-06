@@ -27,7 +27,13 @@ Meteor.startup(() => {
     });
 
     Meteor.publish("userData", () => Meteor.users.find({_id: this.userId}));
-    Meteor.publish("allUsers", () => Meteor.users.find({ "profile.isAdmin": { $ne: true } }));
+    Meteor.publish("allUsers", function () {
+        if (this.userId) {
+            Meteor.users.find({ "profile.isAdmin": { $ne: true } });
+        } else {
+            throw new Error(`Access denied`);
+        }
+    });
 
     Meteor.methods({
         createUserWithoutLogin(options) {
