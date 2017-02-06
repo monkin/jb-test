@@ -16,7 +16,7 @@ interface CriteriaMultiselectItem {
 }
 
 const hiddenChip: CSSProperties = {
-        display: "inline-block",
+        display: "block",
         opacity: 0,
         maxWidth: 0,
         overflow: "hidden",
@@ -25,13 +25,28 @@ const hiddenChip: CSSProperties = {
         transitionDuration: "0.3s"
     },
     visibleChip: CSSProperties = {
-        display: "inline-block",
+        display: "block",
         opacity: 1,
         maxWidth: 256,
         overflow: "hidden",
         margin: "0 4px",
         transitionProperty: "opacity, max-width",
-        transitionDuration: "0.3s"
+        transitionDuration: "0.3s",
+        overflowX: "hidden"
+    },
+    hiddenMenuItem: CSSProperties = {
+        maxHeight: 0,
+        opacity: 0,
+        transitionProperty: "opacity, max-height",
+        transitionDuration: "0.3s",
+        overflowY: "hidden"
+    },
+    visibleMenuItem: CSSProperties = {
+        maxHeight: 48,
+        opacity: 1,
+        transitionProperty: "opacity, max-height",
+        transitionDuration: "0.3s",
+        overflowY: "hidden"
     };
 
 class CriteriaMultiselect extends Component<{ criteria: Criteria[], mark: number, marks: Marks[], toUser: string, muiTheme: MuiTheme }, { open: boolean, anchor?: Element }> {
@@ -62,7 +77,7 @@ class CriteriaMultiselect extends Component<{ criteria: Criteria[], mark: number
             return <div style={{ position: "relative", borderBottom: "solid 1px", borderColor: palette.borderColor }}>
                 <div
                     ref={ element => anchor = element }
-                    style={{ color: palette["secondaryTextColor"], padding: spacing.desktopGutterMini, cursor: "pointer" }}
+                    style={{ color: palette["secondaryTextColor"], padding: spacing.desktopGutterMini, cursor: "pointer", height: 32, display: "flex" }}
                     onClick={ event => {
                         if (event.target === anchor || event.target === emptyMessage) {
                             this.setState({ open: true, anchor });
@@ -89,8 +104,20 @@ class CriteriaMultiselect extends Component<{ criteria: Criteria[], mark: number
                     <List>
                         {p.criteria.map(criterion => {
                             let mark = markByCriterion[criterion._id],
-                                checked = mark ===  p.mark;
+                                checked = mark === p.mark;
                             return <ListItem
+                                style={ (mark === p.mark || !mark) ? visibleMenuItem : hiddenMenuItem }
+                                onClick={() => this.toggleMark(criterion, checked)}
+                                key={criterion._id} primaryText={criterion.name}
+                                insetChildren={ !checked }
+                                leftIcon={checked ? <NavigationCheck/> as ReactElement<any> : undefined}/>;
+                        })}
+                        <Divider style={p.criteria.some(c => markByCriterion[c._id] === p.mark || !markByCriterion[c._id]) && p.criteria.some(c => markByCriterion[c._id] !== p.mark && !!markByCriterion[c._id]) ? {} : { display: "none" }}/>
+                        {p.criteria.map(criterion => {
+                            let mark = markByCriterion[criterion._id],
+                                checked = mark === p.mark;
+                            return <ListItem
+                                style={ (mark !== p.mark && mark) ? visibleMenuItem : hiddenMenuItem }
                                 onClick={() => this.toggleMark(criterion, checked)}
                                 key={criterion._id} primaryText={criterion.name}
                                 insetChildren={ !checked }

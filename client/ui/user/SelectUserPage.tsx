@@ -20,7 +20,7 @@ class SelectUserPage extends Component<{ users: Meteor.User[] }, { search: strin
                 title="Peer Assessment"
                 iconElementLeft={<IconButton title="Log out"
                 onClick={ () => Accounts.logout(() => browserHistory.push("/")) }><NavigationClose/></IconButton> as ReactElement<any>}/>
-            <div style={{ overflowY: "scroll", width: "100%" }}>
+            <div style={{ overflowY: "scroll", width: "100%", flexGrow: 1 }}>
                 <Paper zDepth={0} style={{ width: "1024px", margin: "0 auto" }}>
                     <CardTitle title="Choose an Employee" style={{ paddingLeft: "0", paddingRight: "0" }}/>
                     <TextField fullWidth={true} floatingLabelText="Employee name" hintText="Employee name" onChange={(e, value) => this.setState({ search: value.trim().replace(/\s+/g, " ").toLowerCase() })}/>
