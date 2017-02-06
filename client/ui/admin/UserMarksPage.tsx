@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Component, ComponentClass, CSSProperties } from "react";
 import { browserHistory, Link } from "react-router";
-import { FloatingActionButton, Snackbar, Paper, CardTitle, FlatButton, Table, TableHeader, TableRow, TableBody, TableHeaderColumn, TableRowColumn } from "material-ui";
+import { FloatingActionButton, Snackbar, Paper, CardTitle, FlatButton, Table, TableHeader, TableRow, TableBody, TableHeaderColumn, TableRowColumn, RaisedButton } from "material-ui";
 import ContentAdd from "material-ui/svg-icons/content/add";
 import ActionDelete from "material-ui/svg-icons/action/delete";
 import { createContainer } from "react-meteor-data";
@@ -27,7 +27,16 @@ class MarksTable extends Component<{ criteria: Criteria[], users: Meteor.User[],
                 }
                 r[v[p.groupBy]][v.criterion] = v.mark;
                 return r;
-            }, {} as { [userId: string]: MarkByCriterion });
+            }, {} as { [userId: string]: MarkByCriterion }),
+            average = p.marks.reduce((r, v) => {
+                if (!r[v.criterion]) {
+                    r[v.criterion] = { count: 1, sum: v.mark };
+                } else {
+                    r[v.criterion].count++;
+                    r[v.criterion].sum += v.mark;
+                }
+                return r;
+            }, {} as { [criterion: string]: { count: number, sum: number } });
         if (palette && spacing) {
             const cellStyle: CSSProperties = {
                     padding: "16px",
@@ -45,21 +54,28 @@ class MarksTable extends Component<{ criteria: Criteria[], users: Meteor.User[],
                         <tr>
                             <th style={ Object.assign({ color: headerColor }, cellStyle) }>User</th>
                             {p.criteria.map(criterion => {
-                                return <th key={ "head_" + criterion._id } style={ Object.assign({ color: headerColor }, cellStyle) }>{criterion.name}</th>;
+                                return <th key={ criterion._id } style={ Object.assign({ color: headerColor }, cellStyle) }>{criterion.name}</th>;
                             })}
                         </tr>
                     </thead>
                     <tbody>
                         {p.users.filter(user => marksByUser[user._id as string]).map(user => {
                             let marks = marksByUser[user._id as string];
-                            return <tr key={ "u_" + user._id }>
+                            return <tr key={ user._id }>
                                 <td style={ cellStyle }><Link to={ "/admin/assessment/" + user._id }>{user.profile.name} {user.profile.surname}</Link></td>
                                 {p.criteria.map(criterion => {
                                     let m = marks[criterion._id];
-                                    return <td style={ cellStyle } key={"c_" + criterion._id}>{ m ? m.toFixed(1) : "n/a" }</td>
+                                    return <td style={ cellStyle } key={ criterion._id }>{ m ? m : "n/a" }</td>
                                 })}
                             </tr>;
                         })}
+                        <tr>
+                            <td style={ cellStyle }>Average</td>
+                            {p.criteria.map(criterion => {
+                                let m = average[criterion._id];
+                                return <td style={ cellStyle } key={ criterion._id }>{ (m && m.count) ? (m.sum / m.count).toFixed(1) + " (" + m.count + ")" : "n/a" }</td>
+                            })}
+                        </tr>
                     </tbody>
                 </table>;
         } else {
@@ -76,13 +92,19 @@ class UserMarksPage extends Component<{ user: Meteor.User, criteria: Criteria[],
             p = this.props,
             userName = p.user ? `${p.user.profile.name} ${p.user.profile.surname}` : "User";
 
-        return <Page value={AdminMenuItem.ASSESSMENT} title="Assessment">
+        return <Page value={ AdminMenuItem.ASSESSMENT } title={ "Marks of " + userName }>
             <Paper style={{ margin: "8px 32px" }} zDepth={ 0 }>
                 <CardTitle title={ "Marks received by " + userName }/>
                 <MarksTableWrapped criteria={ p.criteria } users={ p.users } groupBy="from" marks={p.receivedMarks}/>
 
                 <CardTitle style={{ marginTop: "32px" }} title={ "Marks sent by " + userName }/>
                 <MarksTableWrapped criteria={ p.criteria } users={ p.users } groupBy="to" marks={p.sentMarks}/>
+                
+                <div style={{ marginTop: "32px", textAlign: "center" }}>
+                    <RaisedButton
+                        label="Back to the summary table"
+                        onClick={ () => browserHistory.push("/admin/assessment") }/>
+                </div>
             </Paper>
         </Page>;
     }
