@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node_modules/.bin/meteor meteor run --port ${PORT:-3000}"
+    "start": "meteor run"
   },
   "dependencies": {
     "@types/es6-shim": "^0.31.32",
@@ -28,8 +28,6 @@
     "react-meteor-data": "^0.2.10",
     "react-router": "^3.0.2",
     "react-tap-event-plugin": "^2.0.1",
-    "meteor": "^0.5.2-1",
-    "fibers": "^1.0.15",
-    "forever": "^0.15.3"
+    
   }
 }
