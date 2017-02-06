@@ -19,17 +19,19 @@ export class Login extends Component<{}, { name: string, password: string, nameM
                         style={{ textAlign: "center", display: "block", width: "100%" }}
                         label="Log in"
                         primary={true}
-                        onClick={() => this.login(this.state.name, this.state.password)}/>
+                        onClick={() => this.login()}/>
                 </div>
             ] as ReactElement<any>[];
-        return <Dialog open={true} title="Login" actions={actions}>
+        return <Dialog open={true} title="Login" actions={actions} onKeyDown={ e => { if (e.keyCode === 13) this.login(); } }>
             <TextField
+                onKeyDown={ e => { if (e.keyCode === 13) this.login(); } }
                 hintText="Name or Email"
                 floatingLabelText="Name or Email"
                 fullWidth={true}
                 onChange={(e, name) => this.setState({ name })}
                 errorText={this.state.nameMessage}/>
             <TextField
+                onKeyDown={ e => { if (e.keyCode === 13) this.login(); } }
                 hintText="Password"
                 floatingLabelText="Password"
                 fullWidth={true}
@@ -39,7 +41,8 @@ export class Login extends Component<{}, { name: string, password: string, nameM
         </Dialog>;
     }
 
-    private login(name: string, password: string) {
+    private login() {
+        let { name, password } = this.state;
         if (!name) {
             this.setState({ nameMessage: "User name is required", passwordMessage: "" });
         } else if (!password) {
