@@ -1,5 +1,6 @@
 
-/// <reference types="@types/meteor" />
+/// <reference types="@types/meteor"/>
+
 
 Meteor.startup(() => {
 

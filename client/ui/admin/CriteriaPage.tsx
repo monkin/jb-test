@@ -6,7 +6,6 @@ import ActionDelete from "material-ui/svg-icons/action/delete";
 import { createContainer } from "react-meteor-data";
 import { Criteria } from "../../lib/Criteria";
 import CreateCriterionDialog from "./CreateCriterionDialog";
-import CreateUserDialog from "./CreateUserDialog";
 import { Page, AdminMenuItem } from "./Page"
 
 class CriteriaPage extends Component<{ criteria: { _id: string, name: string }[] }, { isCreateDialogOpen: boolean, criterionCreatedNotification: boolean, selection: number[], resetSelectionTag: string }> {

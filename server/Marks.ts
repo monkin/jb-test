@@ -1,5 +1,6 @@
 
-/// <reference types="@types/meteor" />
+/// <reference types="@types/meteor"/>
+/// <reference types="@types/node"/>
 
 import { Validator } from "jsonschema";
 import "es6-shim";
@@ -29,8 +30,8 @@ namespace Mark {
     }
 }
 
-function isAdmin() {
-    let user = Accounts.user();
+function isAdmin(userId?: string) {
+    let user = Meteor.users.findOne(userId || Accounts.userId());
     return !!(user && user.profile && user.profile.isAdmin);
 }
 
@@ -41,16 +42,24 @@ Meteor.startup(() => {
     marks.allow({ insert: () => false, update: () => false, remove: () => false });
     summary.allow({ insert: () => false, update: () => false, remove: () => false });
 
-    Meteor.publish("marks", (options: { from?: string, to?: string }) => {
+    Meteor.publish("marks", function (options: { from?: string, to?: string }) {
         let { from, to } = options;
-        if (isAdmin) {
+        if (isAdmin(this.userId)) {
             return marks.find(Object.assign(from ? { from } : {}, to ? { to } : {}));
         } else {
-            if (from && from === Meteor.userId()) {
+            if (from && from === this.userId) {
                 return marks.find(Object.assign({ from }, to ? { to } : {}));
             } else {
                 throw new Error(`Access denied`);
             }
+        }
+    });
+
+    Meteor.publish("summary", function () {
+        if (isAdmin(this.userId)) {
+            return summary.find({});
+        } else {
+            throw new Error(`Access denied`);
         }
     });
 
@@ -76,7 +85,7 @@ Meteor.startup(() => {
                     throw new Error("You can't put marks to yourself");
                 }
 
-                let oldMark = marks.findOne({ from: mark.from, to: mark.from, criterion: mark.criterion }),
+                let oldMark = marks.findOne({ from: mark.from, to: mark.to, criterion: mark.criterion }),
                     summaryItem = summary.findOne({ user: mark.to, criterion: mark.criterion }),
                     incSum = 0,
                     incCount = 0;
@@ -93,7 +102,7 @@ Meteor.startup(() => {
                 } else {
                     incSum = mark.mark;
                     incCount = 1;
-                    marks.insert(mark);
+                    let id = marks.insert(mark);
                 }
 
                 if (summaryItem) {
